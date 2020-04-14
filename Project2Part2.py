@@ -13,7 +13,7 @@ class DirectedGraph:
         self.listVertex.add(N)
 
     def addUndirectedEdge(self, first, second): # ret type is void, parameters are nodes
-        first.adjList.add(second)
+        first.adjList.add(second)  #check for dups
        
     def removeUndirectedEdge(self, first, second): #ret type is void, parameters are final nodes
         first.adjList.remove(second)
@@ -25,8 +25,8 @@ class DirectedGraph:
 class TopSort:
     def Kahns(self, graph):#ret type is a ArrayList, parameter is a DirectedGraph
         counterList = {}
-        x = graph.getAllNodes()
-        for n in x:
+        x = graph.getAllNodes()    #consider changing x to something like nodelist for clarity
+        for n in x:         
             counterList[n] = 0
         for node in x:
             adjList = node.adjList
@@ -49,7 +49,7 @@ class TopSort:
         return queue
    
     def mDFS(self, graph): #ret type is ArrayList, parameter is a DirectedGraph
-        listNodes = graph.getAllNodes()
+        listNodes = graph.getAllNodes()  #just like this!
         start = next(iter(listNodes))
         visited = set()
         stack = []
@@ -67,7 +67,7 @@ class TopSort:
                 self.mDFSHelper(node, visited, stack)
         stack.append(n)
 
-class newNode2:
+class newNode2:    #consider specifying that this is for the WeightedGraph with a class name like WeightedNode.
     def __init__(self, nodeVal):
         self.val = nodeVal
         self.adjList = {}
@@ -89,7 +89,7 @@ class WeightedGraph:
     def getAllNodes(self): # return type is hashSet
         return self.listVertex
 
-class newNode3:
+class newNode3: #same as before, call this GridNode or the likes.
     def __init__(self, x, y, nodeVal):
         self.val = nodeVal
         self.coordinates = (x,y)
@@ -105,7 +105,7 @@ class GridGraph:
         return N
 
     def addUndirectedEdge(self, first, second): #ret type is void, parameters are GridNodes
-        first.adjList.add(second)
+        first.adjList.add(second)   #check for dups either here or in AddGridNode
         second.adjList.add(first)
 
         if abs(first.coordinates[0]- second.coordinates[0]) == 1 or abs(first.coordinates[1]- second.coordinates[1]) == 1 :
@@ -134,24 +134,24 @@ def main():
 
         Final1 = finalNode.coordinates[0]
         Final2 = finalNode.coordinates[1]
-        d = abs(Final1 - x1) + abs(Final2-x2)
+        d = abs(Final1 - x1) + abs(Final2-x2) #this naming is a little confusing considering something like abs(node1x - finalnodex) + abs(node1y - finalnodey)
         return d
 
     def astar(sourceNode, destNode): #ret type is a arrayList, parameters are Nodes
         visited = set()
-        distancedict = {}
+        distancedict = {}  #good use of naming, seen too many dictionaries just named d (not sure if this is a python thing)
         parentDict = {}
         distancedict[sourceNode] = 0
         parentDict[sourceNode] = None
         finalDist = {}
         finalDist[source] = ManhattanDistance(sourceNode, destNode)
         curr = sourceNode
-        a = True
+        a = True   #better to name this bool flag or just consider using a break somwhere in your loop
         while a:
             adjlist = curr.adjList
             for neighbor in adjlist:
                 if neighbor not in visited: 
-                    if distancedict.get(neighbor) == None: #same as infinite
+                    if distancedict.get(neighbor) == None: #same as infinite    #consider using float('inf') to denote infinity
                         distancedict[neighbor] = distancedict[curr] 
                         parentDict[neighbor] = curr
                         finalDist[neighbor] = distancedict[neighbor] + ManhattanDistance(neighbor,destNode)
@@ -161,7 +161,7 @@ def main():
                             parentDict[neighbor] = curr
                             finalDist[neighbor] = distancedict[neighbor] + ManhattanDistance(neighbor,destNode)
             visited.add(curr)
-            min_ = 9999999
+            min_ = 9999999                 #consider using float('inf') here
             for node in distancedict: #get the smallest val in dictionary
                 if node not in visited:
                     if finalDist[node] < min_:
@@ -189,7 +189,7 @@ def main():
                 N = g.AddGridNode(i,j, nodeVal) 
                 ans = dict.get(N, "no")
                 if ans != "no": #means nodeVal not original
-                    a = True
+                    a = True             #consider naming this flag or adding a break in your loop.
                     while a:
                         N = g.AddGridNode(i,j, i*2) 
                         ans = dict.get(N, "no")
@@ -209,8 +209,8 @@ def main():
             elif r==3:
                 node2 = g.getNode(x-1, y)
             elif r==4:
-                node2 = g.getNode(x+1, y)
-            if node2:
+                node2 = g.getNode(x+1, y) #i like this if-elseif code block, very readable and easy to understand.
+            if node2:        #will node2 ever be null? consider removing this if statement if not.
                 #print("node 2: " + str(node2.coordinates[0]) + " , " + str(node2.coordinates[1]))
                 g.addUndirectedEdge(node,node2)
         return g
@@ -236,7 +236,7 @@ def main():
                             distancedict[neighbor] = distancedict[curr] + adjlist[neighbor]
                             parentDict[neighbor] = curr
             visited.add(curr)
-            min_ = 9999999
+            min_ = 9999999   #consider float('inf') here
             for node in distancedict: #get the smallest val in dictionary
                 if node not in visited:
                     if distancedict[node] < min_:
@@ -261,7 +261,7 @@ def main():
             node1Val = nodeVal2
         
         z = g4.getAllNodes()
-        '''
+        '''             # best to remove commented code blocks if unused.
         for node in z:
             print("node is ")
             print(node.val)
